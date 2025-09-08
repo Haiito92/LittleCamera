@@ -12,8 +12,8 @@ namespace LittleCamera.Views
         
         // Constrain Zone
         [SerializeField] private Transform _centralPoint;
-        [SerializeField] private float _yawOffsetMax;
-        [SerializeField] private float _pitchOffsetMax;
+        [SerializeField, Range(0,360)] private float _yawOffsetMax;
+        [SerializeField, Range(0,360)] private float _pitchOffsetMax;
         
         public override CameraConfiguration GetConfiguration()
         {
@@ -41,15 +41,10 @@ namespace LittleCamera.Views
             float centralYaw = Mathf.Atan2(centralPointDirection.x, centralPointDirection.z) * Mathf.Rad2Deg; 
             float targetYaw = Mathf.Atan2(targetDirection.x, targetDirection.z) * Mathf.Rad2Deg;
 
-            float diff = targetYaw - centralYaw;
-            float absDiff = Mathf.Abs(diff);
-
-            if (absDiff < _yawOffsetMax)
-            {
-                return targetYaw;
-            }
-
-            return diff > 0 ? centralYaw + _yawOffsetMax : centralYaw - _yawOffsetMax;
+            float diff = Mathf.DeltaAngle(centralYaw, targetYaw);
+            diff = Mathf.Clamp(diff, -_yawOffsetMax, _yawOffsetMax);
+            
+            return centralYaw + diff;
         }
         
         private float ComputePitch(Vector3 centralPointDirection, Vector3 targetDirection)
@@ -57,15 +52,9 @@ namespace LittleCamera.Views
             float centralPitch = -Mathf.Asin(centralPointDirection.y) * Mathf.Rad2Deg;
             float targetPitch = -Mathf.Asin(targetDirection.y) * Mathf.Rad2Deg;
 
-            float diff = targetPitch - centralPitch;
-            float absDiff = Mathf.Abs(diff);
+            float diff = Mathf.Clamp(targetPitch - centralPitch, -_pitchOffsetMax, _pitchOffsetMax);
 
-            if (absDiff < _pitchOffsetMax)
-            {
-                return targetPitch;
-            }
-
-            return diff > 0 ? centralPitch + _pitchOffsetMax : centralPitch - _pitchOffsetMax;
+            return centralPitch + diff;
         }
     }
 }
