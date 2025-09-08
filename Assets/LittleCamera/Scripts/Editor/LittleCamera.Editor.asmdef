@@ -1,3 +1,16 @@
 {
-	"name": "LittleCamera.Editor"
+    "name": "LittleCamera.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e3574384a19d59f418ca9b67f5a976f7"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
