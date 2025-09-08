@@ -18,8 +18,8 @@ namespace LittleCamera.Views
             
             Vector3 targetDirection = (_target.transform.position - transform.position).normalized;
             
-            configuration.Yaw = Mathf.Atan2(targetDirection.x, targetDirection.y) * Mathf.Rad2Deg;
-            configuration.Pitch = Mathf.Asin(targetDirection.y) * Mathf.Rad2Deg;
+            configuration.Yaw = Mathf.Atan2(targetDirection.x, targetDirection.z) * Mathf.Rad2Deg;
+            configuration.Pitch = -Mathf.Asin(targetDirection.y) * Mathf.Rad2Deg;
             configuration.Roll = _roll;
             
             configuration.Distance = 0;
