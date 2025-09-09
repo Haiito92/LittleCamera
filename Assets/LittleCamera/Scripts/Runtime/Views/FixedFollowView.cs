@@ -1,6 +1,5 @@
 using LittleCamera.Camera;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace LittleCamera.Views
 {

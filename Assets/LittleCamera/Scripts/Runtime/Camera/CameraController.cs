@@ -46,19 +46,13 @@ namespace LittleCamera.Camera
         private void Update()
         {
             _targetCameraConfiguration = ComputeAverageConfiguration();
-            _currentCameraConfiguration = _targetCameraConfiguration;
+            LerpCurrentConfiguration();
             ApplyConfiguration();
         }
         #endregion
 
-        private void ApplyConfiguration()
-        {
-            if(_camera == null) return;
 
-            _camera.transform.rotation = _currentCameraConfiguration.GetRotation();
-            _camera.transform.position = _currentCameraConfiguration.GetPosition();
-            _camera.fieldOfView = _currentCameraConfiguration.FieldOfView;
-        }
+        #region Configuration Computing and Application
 
         private CameraConfiguration ComputeAverageConfiguration()
         {
@@ -105,6 +99,30 @@ namespace LittleCamera.Camera
             return averageConfiguration;
         }
 
+        private void LerpCurrentConfiguration()
+        {
+            
+            _currentCameraConfiguration.Yaw += (_targetCameraConfiguration.Yaw - _currentCameraConfiguration.Yaw) * 0.1f;
+            _currentCameraConfiguration.Pitch += (_targetCameraConfiguration.Pitch - _currentCameraConfiguration.Pitch) * 0.1f;
+            _currentCameraConfiguration.Roll += (_targetCameraConfiguration.Roll - _currentCameraConfiguration.Roll) * 0.1f;
+            
+            _currentCameraConfiguration.Distance += (_targetCameraConfiguration.Distance - _currentCameraConfiguration.Distance) * 0.1f;
+            _currentCameraConfiguration.Pivot += (_targetCameraConfiguration.Pivot - _currentCameraConfiguration.Pivot) * 0.1f;
+            
+            _currentCameraConfiguration.FieldOfView += (_targetCameraConfiguration.FieldOfView - _currentCameraConfiguration.FieldOfView) * 0.1f;
+        }
+        
+        private void ApplyConfiguration()
+        {
+            if(_camera == null) return;
+
+            _camera.transform.rotation = _currentCameraConfiguration.GetRotation();
+            _camera.transform.position = _currentCameraConfiguration.GetPosition();
+            _camera.fieldOfView = _currentCameraConfiguration.FieldOfView;
+        }
+        #endregion
+
+        #region Views Management
         public void AddView(AView view)
         {
             if(!_activeViews.Contains(view)) _activeViews.Add(view);
@@ -114,6 +132,8 @@ namespace LittleCamera.Camera
         {
             _activeViews.Remove(view);
         }
+        #endregion
+
 
         private void OnDrawGizmos()
         {
