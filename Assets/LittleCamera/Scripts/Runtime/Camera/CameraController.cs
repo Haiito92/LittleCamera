@@ -8,9 +8,12 @@ namespace LittleCamera.Camera
     public class CameraController : MonoBehaviour
     {
         private UnityEngine.Camera _camera;
+        [SerializeField] private float _cameraMoveSpeed = 10f;
+        
         private CameraConfiguration _currentCameraConfiguration = new CameraConfiguration();
         private CameraConfiguration _targetCameraConfiguration = new CameraConfiguration();
 
+        
         private List<AView> _activeViews = new List<AView>(); 
         
         #region Singleton
@@ -101,15 +104,27 @@ namespace LittleCamera.Camera
 
         private void LerpCurrentConfiguration()
         {
+            if (_cameraMoveSpeed <= 0)
+            {
+                _currentCameraConfiguration = _targetCameraConfiguration;
+                return;
+            }
+
+            Vector2 currentYaw = new Vector3(Mathf.Cos(_currentCameraConfiguration.Yaw * Mathf.Deg2Rad),
+                Mathf.Sin(_currentCameraConfiguration.Yaw * Mathf.Deg2Rad));
+            Vector2 targetYaw = new Vector3(Mathf.Cos(_targetCameraConfiguration.Yaw * Mathf.Deg2Rad),
+                Mathf.Sin(_targetCameraConfiguration.Yaw * Mathf.Deg2Rad));
+
+            currentYaw += (targetYaw - currentYaw) * _cameraMoveSpeed * Time.deltaTime;
+            _currentCameraConfiguration.Yaw = Vector2.SignedAngle(Vector2.right, currentYaw);
             
-            _currentCameraConfiguration.Yaw += (_targetCameraConfiguration.Yaw - _currentCameraConfiguration.Yaw) * 0.1f;
-            _currentCameraConfiguration.Pitch += (_targetCameraConfiguration.Pitch - _currentCameraConfiguration.Pitch) * 0.1f;
-            _currentCameraConfiguration.Roll += (_targetCameraConfiguration.Roll - _currentCameraConfiguration.Roll) * 0.1f;
+            _currentCameraConfiguration.Pitch += (_targetCameraConfiguration.Pitch - _currentCameraConfiguration.Pitch) * _cameraMoveSpeed * Time.deltaTime;
+            _currentCameraConfiguration.Roll += (_targetCameraConfiguration.Roll - _currentCameraConfiguration.Roll) * _cameraMoveSpeed * Time.deltaTime;
             
-            _currentCameraConfiguration.Distance += (_targetCameraConfiguration.Distance - _currentCameraConfiguration.Distance) * 0.1f;
-            _currentCameraConfiguration.Pivot += (_targetCameraConfiguration.Pivot - _currentCameraConfiguration.Pivot) * 0.1f;
+            _currentCameraConfiguration.Distance += (_targetCameraConfiguration.Distance - _currentCameraConfiguration.Distance) * _cameraMoveSpeed * Time.deltaTime;
+            _currentCameraConfiguration.Pivot += (_targetCameraConfiguration.Pivot - _currentCameraConfiguration.Pivot) * _cameraMoveSpeed * Time.deltaTime;
             
-            _currentCameraConfiguration.FieldOfView += (_targetCameraConfiguration.FieldOfView - _currentCameraConfiguration.FieldOfView) * 0.1f;
+            _currentCameraConfiguration.FieldOfView += (_targetCameraConfiguration.FieldOfView - _currentCameraConfiguration.FieldOfView) * _cameraMoveSpeed * Time.deltaTime;
         }
         
         private void ApplyConfiguration()
