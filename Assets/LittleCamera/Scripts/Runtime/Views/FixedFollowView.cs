@@ -5,13 +5,17 @@ namespace LittleCamera.Views
 {
     public class FixedFollowView : AView
     {
+        [Header("Fixed Follow View Parameters")]
         [SerializeField] private float _roll;
         [SerializeField] private float _fieldOfView;
         [SerializeField] private Transform _target;
         
         // Constrain Zone
+        [Header("Constrains")]
         [SerializeField] private Transform _centralPoint;
+        [SerializeField] private bool _isYawConstrained;
         [SerializeField, Range(0,360)] private float _yawOffsetMax;
+        [SerializeField] private bool _isPitchConstrained;
         [SerializeField, Range(0,360)] private float _pitchOffsetMax;
         
         public override CameraConfiguration GetConfiguration()
@@ -37,8 +41,14 @@ namespace LittleCamera.Views
 
         private float ComputeYaw(Vector3 centralPointDirection, Vector3 targetDirection)
         {
-            float centralYaw = Mathf.Atan2(centralPointDirection.x, centralPointDirection.z) * Mathf.Rad2Deg; 
             float targetYaw = Mathf.Atan2(targetDirection.x, targetDirection.z) * Mathf.Rad2Deg;
+            
+            if (!_isYawConstrained)
+            {
+                return targetYaw;
+            }
+            
+            float centralYaw = Mathf.Atan2(centralPointDirection.x, centralPointDirection.z) * Mathf.Rad2Deg; 
 
             float diff = Mathf.DeltaAngle(centralYaw, targetYaw);
             diff = Mathf.Clamp(diff, -_yawOffsetMax, _yawOffsetMax);
@@ -48,8 +58,14 @@ namespace LittleCamera.Views
         
         private float ComputePitch(Vector3 centralPointDirection, Vector3 targetDirection)
         {
-            float centralPitch = -Mathf.Asin(centralPointDirection.y) * Mathf.Rad2Deg;
             float targetPitch = -Mathf.Asin(targetDirection.y) * Mathf.Rad2Deg;
+            
+            if (!_isPitchConstrained)
+            {
+                return targetPitch;
+            }
+            
+            float centralPitch = -Mathf.Asin(centralPointDirection.y) * Mathf.Rad2Deg;
 
             float diff = Mathf.Clamp(targetPitch - centralPitch, -_pitchOffsetMax, _pitchOffsetMax);
 
