@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using LittleCamera.Views;
 using UnityEngine;
@@ -7,7 +8,8 @@ namespace LittleCamera.Camera
     public class CameraController : MonoBehaviour
     {
         private UnityEngine.Camera _camera;
-        private CameraConfiguration _cameraConfiguration = new CameraConfiguration();
+        private CameraConfiguration _currentCameraConfiguration = new CameraConfiguration();
+        private CameraConfiguration _targetCameraConfiguration = new CameraConfiguration();
 
         private List<AView> _activeViews = new List<AView>(); 
         
@@ -35,9 +37,16 @@ namespace LittleCamera.Camera
             _camera = UnityEngine.Camera.main;
         }
 
+        private void Start()
+        {
+            _targetCameraConfiguration = ComputeAverageConfiguration();
+            _currentCameraConfiguration = _targetCameraConfiguration;
+        }
+
         private void Update()
         {
-            _cameraConfiguration = ComputeAverageConfiguration();
+            _targetCameraConfiguration = ComputeAverageConfiguration();
+            _currentCameraConfiguration = _targetCameraConfiguration;
             ApplyConfiguration();
         }
         #endregion
@@ -46,9 +55,9 @@ namespace LittleCamera.Camera
         {
             if(_camera == null) return;
 
-            _camera.transform.rotation = _cameraConfiguration.GetRotation();
-            _camera.transform.position = _cameraConfiguration.GetPosition();
-            _camera.fieldOfView = _cameraConfiguration.FieldOfView;
+            _camera.transform.rotation = _currentCameraConfiguration.GetRotation();
+            _camera.transform.position = _currentCameraConfiguration.GetPosition();
+            _camera.fieldOfView = _currentCameraConfiguration.FieldOfView;
         }
 
         private CameraConfiguration ComputeAverageConfiguration()
@@ -108,7 +117,7 @@ namespace LittleCamera.Camera
 
         private void OnDrawGizmos()
         {
-            _cameraConfiguration.DrawGizmos(Color.green);
+            _targetCameraConfiguration.DrawGizmos(Color.green);
         }
     }
 }

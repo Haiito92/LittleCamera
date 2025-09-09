@@ -1,0 +1,2 @@
+Camera controller:
+- Check that when computing average configuration, yaw value outside [0;360] don't create any problem. If so, normalize yaw in every view when calculating cameraconfig, or camera config returns normalized yaw too.
