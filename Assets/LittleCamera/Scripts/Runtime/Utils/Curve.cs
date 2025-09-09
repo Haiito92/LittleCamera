@@ -11,17 +11,31 @@ namespace LittleCamera.Utils
 
         public Vector3 GetPosition(float t)
         {
-            throw new System.NotImplementedException();
+            return MathsUtils.CubicBezier(_a, _b, _c, _d, t);
         }
 
         public Vector3 GetPosition(float t, Matrix4x4 localToWorldMatrix)
         {
-            throw new System.NotImplementedException();
+            return localToWorldMatrix.MultiplyPoint(GetPosition(t));
         }
 
-        public void DrawGizmos(Color color)
+        public void DrawGizmos(Color color, Matrix4x4 localToWorldMatrix)
         {
-            throw new System.NotImplementedException();
+            Gizmos.color = color;
+
+            Gizmos.DrawIcon(localToWorldMatrix.MultiplyPoint(_a), "A");
+            Gizmos.DrawIcon(localToWorldMatrix.MultiplyPoint(_b), "B");
+            Gizmos.DrawIcon(localToWorldMatrix.MultiplyPoint(_c), "C");
+            Gizmos.DrawIcon(localToWorldMatrix.MultiplyPoint(_d), "D");
+
+            Gizmos.DrawIcon(GetPosition(0.0f, localToWorldMatrix), "P0");
+            Gizmos.DrawIcon(GetPosition(0.2f, localToWorldMatrix), "P1");
+            Gizmos.DrawIcon(GetPosition(0.5f, localToWorldMatrix), "P2");
+            Gizmos.DrawIcon(GetPosition(0.7f, localToWorldMatrix), "P3");
+            Gizmos.DrawIcon(GetPosition(1.0f, localToWorldMatrix), "P4");
+            
+            
+            
         }
     }
 }
