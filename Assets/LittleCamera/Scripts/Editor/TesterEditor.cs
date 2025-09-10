@@ -13,11 +13,14 @@ namespace LittleCamera.Editor
         {
             Tester tester = target as Tester;
             if(tester == null) return;
-            
-            DrawHandle(tester, ref tester._testCurve.A);
-            DrawHandle(tester, ref tester._testCurve.B);
-            DrawHandle(tester, ref tester._testCurve.C);
-            DrawHandle(tester, ref tester._testCurve.D);
+
+            foreach (var VARIABLE in tester.TestCurve.)
+            {
+                // DrawHandle(tester, ref tester._testCurve.A);
+                // DrawHandle(tester, ref tester._testCurve.B);
+                // DrawHandle(tester, ref tester._testCurve.C);
+                // DrawHandle(tester, ref tester._testCurve.D);
+            }
             
         }
 

@@ -1,20 +1,18 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace LittleCamera.Utils
 {
     [Serializable]
-    public struct Curve
+    public class Curve
     {
-        public Vector3 A;
-        public Vector3 B;
-        public Vector3 C;
-        public Vector3 D;
+        [SerializeField] private List<Vector3> _points;
 
         public Vector3 GetPosition(float t)
         {
-            return MathsUtils.CubicBezier(A, B, C, D, t);
+            return MathsUtils.Bezier(_points, t);
         }
 
         public Vector3 GetPosition(float t, Matrix4x4 localToWorldMatrix)
@@ -24,15 +22,17 @@ namespace LittleCamera.Utils
 
         public void DrawGizmos(Color handlesColor ,Color curveColor, Matrix4x4 localToWorldMatrix)
         {
+            if(_points.Count == 0) return;
+            
             Gizmos.color = handlesColor;
 
-            Gizmos.DrawSphere(localToWorldMatrix.MultiplyPoint(A), 0.03f);
-            Gizmos.DrawSphere(localToWorldMatrix.MultiplyPoint(B), 0.03f);
-            Gizmos.DrawSphere(localToWorldMatrix.MultiplyPoint(C), 0.03f);
-            Gizmos.DrawSphere(localToWorldMatrix.MultiplyPoint(D), 0.03f);
-
+            foreach (Vector3 point in _points)
+            {
+                Gizmos.DrawSphere(localToWorldMatrix.MultiplyPoint(point), 0.03f);
+            }
+            
             Gizmos.color = curveColor;
-
+            
             float t = 0;
             while (t <= 1f)
             {

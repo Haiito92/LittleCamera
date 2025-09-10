@@ -3,3 +3,4 @@ Camera controller:
 
 Utils:
 - Make bezier function recursive.
+- Make curve back to struct

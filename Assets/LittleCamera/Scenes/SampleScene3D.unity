@@ -789,11 +789,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f1a0395f2fd9b45b2db421a0ef7972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _testCurve:
-    A: {x: -11.519342, y: -0.89109874, z: 3.855482}
-    B: {x: -3.9624104, y: 2.5097635, z: 4.8670926}
-    C: {x: -5.9263277, y: 1.9647382, z: -4.6868334}
-    D: {x: -1.2543323, y: -0.3200736, z: -0.62969494}
+  <TestCurve>k__BackingField:
+    _points:
+    - {x: -4.05, y: 0, z: 0}
+    - {x: -2.83, y: 0, z: -0.09}
+    - {x: -2.38, y: 0, z: -2.04}
 --- !u!1 &1245325878
 GameObject:
   m_ObjectHideFlags: 0

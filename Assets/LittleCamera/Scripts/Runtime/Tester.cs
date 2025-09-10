@@ -1,16 +1,18 @@
 using System;
 using LittleCamera.Utils;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace LittleCamera.Runtime
 {
     public class Tester : MonoBehaviour
     {
-        [SerializeField] public Curve _testCurve;
+        [field:SerializeField] public Curve TestCurve { get; private set; }
 
         private void OnDrawGizmos()
         {
-            _testCurve.DrawGizmos(Color.red, Color.magenta, transform.localToWorldMatrix);
+            if(TestCurve == null) return;
+            TestCurve.DrawGizmos(Color.red, Color.magenta, transform.localToWorldMatrix);
         }
     }
 }
