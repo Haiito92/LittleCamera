@@ -10,5 +10,12 @@
     "name": "Antoine Hanna (Haiito92)",
     "email": "ahanna.pro@gmail.com",
     "url": "https://github.com/Haiito92"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Little Camera Samples",
+      "description": "Contains prefabs for CameraController and Views.",
+      "path": "Sample~/Prefabs"
+    }
+  ]
 }
