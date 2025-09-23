@@ -1,0 +1,1 @@
+Little Camera is a package that lets you have a better camera management.
