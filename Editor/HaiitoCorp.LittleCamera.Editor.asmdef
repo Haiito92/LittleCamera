@@ -1,8 +1,12 @@
 {
     "name": "HaiitoCorp.LittleCamera.Editor",
     "rootNamespace": "HaiitoCorp.LittleCamera.Editor",
-    "references": [],
-    "includePlatforms": [],
+    "references": [
+        "GUID:c28855b4c907acb4da3c0214a7910e69"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
